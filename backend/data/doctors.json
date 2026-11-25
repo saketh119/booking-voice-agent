@@ -1,0 +1,7 @@
+[
+  {"id": "d1", "name": "Dr. Ananya Sharma", "speciality": "Cardiology", "experience_years": 14, "clinic": "Heartline Clinic"},
+  {"id": "d2", "name": "Dr. Rohan Mehta", "speciality": "Dermatology", "experience_years": 9, "clinic": "Skin & Co."},
+  {"id": "d3", "name": "Dr. Priya Nair", "speciality": "Pediatrics", "experience_years": 11, "clinic": "Little Steps Pediatrics"},
+  {"id": "d4", "name": "Dr. Arjun Rao", "speciality": "Orthopedics", "experience_years": 17, "clinic": "Motion Ortho Care"},
+  {"id": "d5", "name": "Dr. Kavya Iyer", "speciality": "General Medicine", "experience_years": 7, "clinic": "Northside Family Clinic"}
+]
