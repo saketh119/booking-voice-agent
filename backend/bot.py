@@ -11,7 +11,7 @@ from pipecat.adapters.llm.schemas.function_schema import FunctionSchema
 from pipecat.adapters.llm.schemas.tools_schema import ToolsSchema
 from pipecat.audio.vad.silero import SileroVADAnalyzer
 from pipecat.audio.vad.vad_analyzer import VADParams
-from pipecat.frames.frames import LLMRunFrame, TTSSpeakFrame
+from pipecat.frames.frames import TTSSpeakFrame
 from pipecat.pipeline.pipeline import Pipeline
 from pipecat.pipeline.worker import PipelineParams, PipelineWorker
 from pipecat.processors.aggregators.llm_context import LLMContext
@@ -31,6 +31,8 @@ from pipecat.workers.runner import WorkerRunner
 import store
 
 GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite")
+
+GREETING = "Hello, thank you for calling Lumen Health. This is Maya. How can I help you today?"
 
 SYSTEM_PROMPT = """\
 You are Maya, the voice receptionist for Lumen Health, a multi-speciality clinic. \
@@ -226,8 +228,10 @@ async def run_bot(connection: SmallWebRTCConnection) -> None:
     @transport.event_handler("on_client_connected")
     async def _on_connected(_t, _c):
         logger.info("client connected")
-        context.add_message({"role": "user", "content": "A caller just connected. Greet them."})
-        await worker.queue_frames([LLMRunFrame()])
+        # A fixed greeting goes straight to TTS: an LLM-written one costs ~2.5 s before the caller hears anything.
+        # The spoken text is appended to the context, so the model knows it already greeted.
+        context.add_message({"role": "user", "content": "A caller just connected."})
+        await worker.queue_frames([TTSSpeakFrame(GREETING)])
 
     @transport.event_handler("on_client_disconnected")
     async def _on_disconnected(_t, _c):
